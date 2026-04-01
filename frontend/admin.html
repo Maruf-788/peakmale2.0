@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | PEAKMALE</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808; --surface: #111; --surface-2: #161616;
+      --border: rgba(255,255,255,0.07); --accent: #e8d5b0;
+      --text: #f0ede8; --text-muted: #666; --text-dim: #999;
+      --success: #4ade80; --error: #f87171; --warning: #fbbf24;
+      --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface); position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-brand { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .admin-badge { font-size: 10px; font-family: var(--mono); letter-spacing: 0.1em;
+      background: rgba(232,213,176,0.1); border: 1px solid rgba(232,213,176,0.3);
+      color: var(--accent); padding: 4px 10px; border-radius: 4px; }
+    .logout-btn { background: transparent; border: 1px solid var(--border);
+      color: var(--text-muted); border-radius: 4px; padding: 6px 14px;
+      font-size: 12px; cursor: pointer; font-family: var(--mono); transition: all .2s; }
+    .logout-btn:hover { border-color: var(--error); color: var(--error); }
+
+    /* LAYOUT */
+    .admin-layout { display: grid; grid-template-columns: 200px 1fr; min-height: calc(100vh - 56px); }
+    .sidebar { border-right: 1px solid var(--border); padding: 24px 0; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px; font-size: 13px; cursor: pointer;
+      color: var(--text-muted); transition: all .2s;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-item:hover  { color: var(--text); background: rgba(255,255,255,0.03); }
+    .sidebar-item.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+    .sidebar-icon { width: 16px; text-align: center; }
+    .main-content { padding: 28px; overflow-x: auto; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: var(--text); }
+    .stat-value.accent  { color: var(--accent); }
+    .stat-value.success { color: var(--success); }
+    .stat-value.warning { color: var(--warning); }
+
+    /* TABLE */
+    .table-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+    }
+    .table-title { font-size: 16px; font-weight: 600; }
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-select {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 7px 12px; font-size: 12px; font-family: var(--mono);
+      outline: none; cursor: pointer;
+    }
+    .filter-select:focus { border-color: var(--accent); }
+    .refresh-btn {
+      background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+      border-radius: 6px; padding: 7px 14px; font-size: 12px; cursor: pointer;
+      font-family: var(--mono); transition: all .2s;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+      color: var(--text-muted); text-transform: uppercase;
+      padding: 10px 14px; text-align: left;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    td {
+      padding: 14px; border-bottom: 1px solid var(--border);
+      vertical-align: middle; font-size: 13px;
+    }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 10px; font-family: var(--mono); letter-spacing: 0.06em; font-weight: 600;
+    }
+    .badge-pending     { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+    .badge-verify      { background: rgba(251,191,36,0.12);  color: var(--warning); border: 1px solid rgba(251,191,36,0.3); }
+    .badge-paid        { background: rgba(74,222,128,0.12);  color: var(--success); border: 1px solid rgba(74,222,128,0.3); }
+    .badge-failed      { background: rgba(248,113,113,0.12); color: var(--error);   border: 1px solid rgba(248,113,113,0.3); }
+    .badge-upi         { background: rgba(139,92,246,0.12);  color: #a78bfa; }
+    .badge-cod         { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+
+    .action-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-dim); border-radius: 5px;
+      padding: 5px 12px; font-size: 11px; cursor: pointer;
+      font-family: var(--mono); transition: all .2s; margin-right: 4px;
+    }
+    .action-btn.approve { border-color: rgba(74,222,128,0.4); color: var(--success); }
+    .action-btn.approve:hover { background: rgba(74,222,128,0.1); }
+    .action-btn.reject  { border-color: rgba(248,113,113,0.4); color: var(--error); }
+    .action-btn.reject:hover  { background: rgba(248,113,113,0.1); }
+    .action-btn.view   { border-color: var(--border); }
+    .action-btn.view:hover { border-color: rgba(232,213,176,0.4); color: var(--accent); }
+    .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .loading-row { text-align: center; padding: 60px; color: var(--text-muted); font-family: var(--mono); font-size: 12px; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); z-index: 200;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px; max-width: 500px; width: 90%;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+    .modal-row { display: flex; gap: 8px; margin-bottom: 12px; font-size: 13px; }
+    .modal-row .label { color: var(--text-dim); width: 140px; flex-shrink: 0; font-family: var(--mono); font-size: 11px; }
+    .modal-row .value { color: var(--text); word-break: break-all; }
+    .modal-close { float: right; background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+      border-radius: 5px; padding: 4px 12px; cursor: pointer; font-size: 13px; }
+    .modal-close:hover { border-color: var(--error); color: var(--error); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .admin-note-input {
+      width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--text); border-radius: 6px; padding: 10px; font-size: 13px;
+      font-family: var(--sans); resize: vertical; outline: none; margin-top: 12px; margin-bottom: 16px;
+    }
+    .admin-note-input:focus { border-color: var(--accent); }
+    .screenshot-img { max-width: 100%; border-radius: 8px; border: 1px solid var(--border); margin-top: 8px; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state p:first-child { font-size: 32px; margin-bottom: 10px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; margin-right: 8px; vertical-align: middle; }
+
+    @media (max-width: 700px) { .admin-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">PEAKMALE / ADMIN</span>
+  <div class="topbar-right">
+    <span class="admin-badge">ADMIN</span>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-item active" data-section="orders">
+      <span class="sidebar-icon">📦</span> Orders
+    </div>
+    <div class="sidebar-item" data-section="pending">
+      <span class="sidebar-icon">⏳</span> Verify UTR
+      <span id="pendingCount" style="margin-left:auto;background:rgba(251,191,36,0.15);color:var(--warning);border-radius:10px;padding:1px 7px;font-size:10px;font-family:var(--mono);"></span>
+    </div>
+    <div class="sidebar-item" data-section="stats">
+      <span class="sidebar-icon">📊</span> Stats
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+    <!-- filled by JS -->
+    <div class="loading-row"><span class="spinner"></span> Loading dashboard...</div>
+  </main>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <span class="modal-title" id="modalTitle">Order Details</span>
+      <button class="modal-close" id="modalClose">✕ Close</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000/api'
+  : 'https://peakmale-api.onrender.com/api';
+
+let authToken = localStorage.getItem('pm_token');
+let allOrders = [];
+let stats     = {};
+let section   = 'orders';
+let filterStatus = '';
+
+// ── Guard: admin only ──────────────────────────────────
+(function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('pm_user') || '{}');
+  if (!authToken || user.role !== 'admin') {
+    alert('Access denied. Please log in as admin.');
+    window.location.href = 'login.html';
+  }
+})();
+
+// ── Init ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('pm_token');
+    localStorage.removeItem('pm_user');
+    window.location.href = 'login.html';
+  });
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('orderModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+      item.classList.add('active');
+      section = item.dataset.section;
+      renderSection();
+    });
+  });
+
+  await Promise.all([loadStats(), loadOrders()]);
+  renderSection();
+});
+
+// ── API ────────────────────────────────────────────────
+async function apiFetch(endpoint, options = {}) {
+  const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` };
+  const res  = await fetch(`${API_BASE}${endpoint}`, { ...options, headers: { ...headers, ...(options.headers || {}) } });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'API error');
+  return data;
+}
+
+async function loadStats() {
+  try {
+    const data = await apiFetch('/admin/stats');
+    stats = data.data;
+    const p = document.getElementById('pendingCount');
+    if (p && stats.pendingVerification > 0) p.textContent = stats.pendingVerification;
+  } catch (err) { console.error('Stats load failed:', err); }
+}
+
+async function loadOrders(qs = '') {
+  try {
+    const data = await apiFetch(`/admin/orders?sort=-createdAt&limit=50${qs}`);
+    allOrders = data.data;
+  } catch (err) { console.error('Orders load failed:', err); }
+}
+
+// ── Render ─────────────────────────────────────────────
+function renderSection() {
+  const main = document.getElementById('mainContent');
+  if (section === 'stats') {
+    main.innerHTML = renderStats();
+  } else if (section === 'pending') {
+    const pending = allOrders.filter(o => o.paymentStatus === 'verification_pending');
+    main.innerHTML = renderOrdersTable(pending, true);
+    attachTableHandlers();
+  } else {
+    main.innerHTML = renderOrdersTable(allOrders, false);
+    attachTableHandlers();
+  }
+}
+
+function renderStats() {
+  return `
+    <h2 style="font-size:20px;font-weight:600;margin-bottom:20px;">Dashboard Stats</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">${stats.totalOrders ?? '—'}</div></div>
+      <div class="stat-card"><div class="stat-label">Awaiting Verification</div><div class="stat-value warning">${stats.pendingVerification ?? '—'}</div></div>
+      <div class="stat-card"><div class="stat-label">Paid Orders</div><div class="stat-value success">${stats.paidOrders ?? '—'}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value accent">₹${(stats.totalRevenue ?? 0).toLocaleString('en-IN')}</div></div>
+      <div class="stat-card"><div class="stat-label">Today's Orders</div><div class="stat-value">${stats.todayOrders ?? '—'}</div></div>
+      <div class="stat-card"><div class="stat-label">Active Products</div><div class="stat-value">${stats.totalProducts ?? '—'}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-value">${stats.totalUsers ?? '—'}</div></div>
+    </div>`;
+}
+
+function renderOrdersTable(orders, pendingMode) {
+  const filterHtml = !pendingMode ? `
+    <div class="filter-row">
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="verification_pending">Awaiting UTR</option>
+        <option value="paid">Paid</option>
+        <option value="failed">Failed</option>
+      </select>
+      <select class="filter-select" id="methodFilter">
+        <option value="">All Methods</option>
+        <option value="UPI">UPI</option>
+        <option value="COD">COD</option>
+      </select>
+      <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
+    </div>` : '';
+
+  if (orders.length === 0) {
+    return `<div class="table-header"><span class="table-title">${pendingMode ? 'Pending Verifications' : 'All Orders'}</span>${filterHtml}</div>
+      <div class="empty-state"><p>✓</p><p>${pendingMode ? 'No pending verifications.' : 'No orders yet.'}</p></div>`;
+  }
+
+  const rows = orders.map(o => `
+    <tr data-id="${o._id}">
+      <td><span style="font-family:var(--mono);font-size:12px;">${o.orderNumber}</span></td>
+      <td>${o.user?.name || 'Guest'}<br/><span style="font-size:11px;color:var(--text-muted)">${o.user?.email || ''}</span></td>
+      <td><span style="font-family:var(--mono);">₹${o.totalAmount.toLocaleString('en-IN')}</span></td>
+      <td><span class="badge badge-${o.paymentMethod.toLowerCase()}">${o.paymentMethod}</span></td>
+      <td>
+        <span class="badge badge-${o.paymentStatus === 'verification_pending' ? 'verify' : o.paymentStatus === 'paid' ? 'paid' : o.paymentStatus === 'failed' ? 'failed' : 'pending'}">
+          ${o.paymentStatus === 'verification_pending' ? '⏳ Verify UTR' : o.paymentStatus.toUpperCase()}
+        </span>
+      </td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">${new Date(o.createdAt).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}</td>
+      <td>
+        <button class="action-btn view" data-action="view" data-id="${o._id}">View</button>
+        ${o.paymentStatus === 'verification_pending' ? `
+          <button class="action-btn approve" data-action="approve" data-id="${o._id}">✓ Approve</button>
+          <button class="action-btn reject"  data-action="reject"  data-id="${o._id}">✕ Reject</button>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  return `
+    <div class="table-header">
+      <span class="table-title">${pendingMode ? '⏳ Pending UTR Verifications' : 'All Orders'} <span style="font-size:13px;color:var(--text-muted);font-weight:400;">(${orders.length})</span></span>
+      ${filterHtml}
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Order #</th><th>Customer</th><th>Amount</th><th>Method</th><th>Payment</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function attachTableHandlers() {
+  document.getElementById('refreshBtn')?.addEventListener('click', async () => {
+    await loadOrders();
+    renderSection();
+  });
+  document.getElementById('statusFilter')?.addEventListener('change', async (e) => {
+    const qs = e.target.value ? `&paymentStatus=${e.target.value}` : '';
+    await loadOrders(qs);
+    renderSection();
+  });
+
+  document.querySelectorAll('[data-action="view"]').forEach(btn => {
+    btn.addEventListener('click', () => openOrderModal(btn.dataset.id));
+  });
+  document.querySelectorAll('[data-action="approve"]').forEach(btn => {
+    btn.addEventListener('click', () => verifyOrder(btn.dataset.id, 'approve'));
+  });
+  document.querySelectorAll('[data-action="reject"]').forEach(btn => {
+    btn.addEventListener('click', () => verifyOrder(btn.dataset.id, 'reject'));
+  });
+}
+
+// ── Order Modal ────────────────────────────────────────
+async function openOrderModal(orderId) {
+  document.getElementById('modalBody').innerHTML = '<div style="text-align:center;padding:40px;"><span class="spinner"></span></div>';
+  document.getElementById('orderModal').classList.add('open');
+
+  try {
+    const data  = await apiFetch(`/admin/orders/${orderId}`);
+    const order = data.data;
+    document.getElementById('modalTitle').textContent = `Order ${order.orderNumber}`;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-row"><span class="label">STATUS</span><span class="value"><span class="badge badge-${order.paymentStatus === 'paid' ? 'paid' : order.paymentStatus === 'verification_pending' ? 'verify' : 'pending'}">${order.paymentStatus.toUpperCase()}</span></span></div>
+      <div class="modal-row"><span class="label">CUSTOMER</span><span class="value">${order.user?.name || 'Guest'}<br/>${order.user?.email || ''}<br/>${order.shippingAddress.phone}</span></div>
+      <div class="modal-row"><span class="label">ADDRESS</span><span class="value">${order.shippingAddress.line1}, ${order.shippingAddress.city}, ${order.shippingAddress.state} - ${order.shippingAddress.pincode}</span></div>
+      <div class="modal-row"><span class="label">AMOUNT</span><span class="value" style="font-family:var(--mono);">₹${order.totalAmount.toLocaleString('en-IN')}</span></div>
+      <div class="modal-row"><span class="label">PAYMENT</span><span class="value">${order.paymentMethod}</span></div>
+      ${order.utr ? `<div class="modal-row"><span class="label">UTR</span><span class="value" style="font-family:var(--mono);letter-spacing:0.05em;">${order.utr}</span></div>` : ''}
+      ${order.utrSubmittedAt ? `<div class="modal-row"><span class="label">UTR SUBMITTED</span><span class="value" style="font-family:var(--mono);font-size:11px;">${new Date(order.utrSubmittedAt).toLocaleString('en-IN')}</span></div>` : ''}
+      ${order.paymentScreenshot ? `<div class="modal-row"><span class="label">SCREENSHOT</span><span class="value"><img src="${order.paymentScreenshot}" class="screenshot-img" alt="Payment proof" /></span></div>` : ''}
+      <div class="modal-row"><span class="label">ITEMS</span><span class="value">${order.items.map(i => `${i.name} ×${i.qty}`).join(', ')}</span></div>
+      ${order.notes ? `<div class="modal-row"><span class="label">NOTES</span><span class="value">${order.notes}</span></div>` : ''}
+      ${order.paymentStatus === 'verification_pending' ? `
+        <hr style="border-color:var(--border);margin:16px 0;">
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px;font-family:var(--mono);">ADMIN NOTE (optional)</p>
+        <textarea class="admin-note-input" id="adminNoteInput" placeholder="e.g. Verified in PhonePe · Amount matches"></textarea>
+        <div class="modal-actions">
+          <button class="action-btn approve" style="flex:1;padding:10px;" onclick="verifyOrder('${order._id}','approve',true)">✓ Approve Payment</button>
+          <button class="action-btn reject"  style="flex:1;padding:10px;" onclick="verifyOrder('${order._id}','reject',true)">✕ Reject Payment</button>
+        </div>
+      ` : ''}
+    `;
+  } catch (err) {
+    document.getElementById('modalBody').innerHTML = `<p style="color:var(--error);">Failed to load order: ${err.message}</p>`;
+  }
+}
+
+function closeModal() {
+  document.getElementById('orderModal').classList.remove('open');
+}
+
+async function verifyOrder(orderId, action, fromModal = false) {
+  const adminNote = fromModal ? document.getElementById('adminNoteInput')?.value : '';
+  const label     = action === 'approve' ? 'approve this payment?' : 'reject this payment?';
+  if (!confirm(`Are you sure you want to ${label}`)) return;
+
+  try {
+    await apiFetch(`/admin/orders/${orderId}/verify`, {
+      method: 'PATCH',
+      body: JSON.stringify({ action, adminNote }),
+    });
+    closeModal();
+    await Promise.all([loadStats(), loadOrders()]);
+    renderSection();
+  } catch (err) {
+    alert(`Error: ${err.message}`);
+  }
+}
+</script>
+
+</body>
+</html>

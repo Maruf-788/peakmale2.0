@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | PEAKMALE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808; --surface: #111; --border: rgba(255,255,255,0.07);
+      --accent: #e8d5b0; --accent-dim: rgba(232,213,176,0.1);
+      --text: #f0ede8; --text-muted: #666; --text-dim: #999;
+      --success: #4ade80; --error: #f87171;
+      --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif; --display: 'Bebas Neue', sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+    .brand { font-family: var(--display); font-size: 28px; letter-spacing: 0.05em; margin-bottom: 32px; color: var(--text); }
+    .brand span { color: var(--accent); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 36px 32px; width: 100%; max-width: 420px; }
+    .tabs { display: flex; margin-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .tab { flex: 1; padding: 10px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all .2s; margin-bottom: -1px; }
+    .tab.active { color: var(--accent); border-color: var(--accent); }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; }
+    input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); border-radius: 7px; padding: 12px 14px; font-size: 14px; font-family: var(--sans); outline: none; transition: border-color .2s; }
+    input:focus { border-color: var(--accent); }
+    .btn { width: 100%; padding: 13px; border-radius: 7px; border: none; font-family: var(--sans); font-weight: 600; font-size: 14px; cursor: pointer; transition: all .2s; margin-top: 4px; }
+    .btn-primary { background: var(--accent); color: #080808; }
+    .btn-primary:hover { background: #d4b96e; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .alert { padding: 11px 14px; border-radius: 7px; font-size: 13px; margin-top: 14px; display: none; }
+    .alert.show { display: block; }
+    .alert-error   { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--error); }
+    .alert-success { background: rgba(74,222,128,0.1);  border: 1px solid rgba(74,222,128,0.3);  color: var(--success); }
+    .back-link { margin-top: 20px; font-size: 13px; color: var(--text-muted); text-align: center; }
+    .back-link a { color: var(--accent); text-decoration: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .panel { display: none; } .panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="brand">PEAKMALE <span>●</span></a>
+
+<div class="card">
+  <div class="tabs">
+    <div class="tab active" data-tab="login">LOGIN</div>
+    <div class="tab" data-tab="register">REGISTER</div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="panel active" id="loginPanel">
+    <div class="form-group">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" placeholder="you@email.com" autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <div class="alert alert-error"   id="loginError"></div>
+    <div class="alert alert-success" id="loginSuccess"></div>
+    <button class="btn btn-primary" id="loginBtn">Login →</button>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="panel" id="registerPanel">
+    <div class="form-group">
+      <label for="regName">Full Name</label>
+      <input type="text" id="regName" placeholder="Rahul Kumar" autocomplete="name" />
+    </div>
+    <div class="form-group">
+      <label for="regEmail">Email</label>
+      <input type="email" id="regEmail" placeholder="you@email.com" autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label for="regPhone">Mobile (optional)</label>
+      <input type="tel" id="regPhone" placeholder="9876543210" maxlength="10" autocomplete="tel" />
+    </div>
+    <div class="form-group">
+      <label for="regPassword">Password (min 8 chars)</label>
+      <input type="password" id="regPassword" placeholder="••••••••" autocomplete="new-password" />
+    </div>
+    <div class="alert alert-error"   id="regError"></div>
+    <div class="alert alert-success" id="regSuccess"></div>
+    <button class="btn btn-primary" id="registerBtn">Create Account →</button>
+  </div>
+</div>
+
+<p class="back-link"><a href="index.html">← Back to Shop</a></p>
+
+<script>
+'use strict';
+
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000/api'
+  : 'https://peakmale-api.onrender.com/api';
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab, .panel').forEach(el => el.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(`${tab.dataset.tab}Panel`).classList.add('active');
+  });
+});
+
+async function apiFetch(endpoint, body) {
+  const res  = await fetch(`${API_BASE}${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Error');
+  return data;
+}
+
+function saveAuth(token, user) {
+  localStorage.setItem('pm_token', token);
+  localStorage.setItem('pm_user', JSON.stringify(user));
+}
+
+function showAlert(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
+function hideAlert(id)      { document.getElementById(id).classList.remove('show'); }
+function setLoading(btn, v) { btn.disabled = v; btn.textContent = v ? 'Please wait...' : btn.dataset.orig; }
+
+// Login
+document.getElementById('loginBtn').dataset.orig = 'Login →';
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const btn   = document.getElementById('loginBtn');
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+  if (!email || !pass) { showAlert('loginError', 'Enter email and password.'); return; }
+  hideAlert('loginError');
+  setLoading(btn, true);
+  try {
+    const data = await apiFetch('/users/login', { email, password: pass });
+    saveAuth(data.token, data.user);
+    showAlert('loginSuccess', '✓ Login successful! Redirecting...');
+    setTimeout(() => {
+      const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+      window.location.href = data.user.role === 'admin' ? 'admin.html' : redirect;
+    }, 800);
+  } catch (err) {
+    showAlert('loginError', err.message);
+    btn.textContent = btn.dataset.orig; btn.disabled = false;
+  }
+});
+
+// Register
+document.getElementById('registerBtn').dataset.orig = 'Create Account →';
+document.getElementById('registerBtn').addEventListener('click', async () => {
+  const btn   = document.getElementById('registerBtn');
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const pass  = document.getElementById('regPassword').value;
+  if (!name || !email || !pass) { showAlert('regError', 'Name, email and password are required.'); return; }
+  if (pass.length < 8) { showAlert('regError', 'Password must be at least 8 characters.'); return; }
+  hideAlert('regError');
+  setLoading(btn, true);
+  try {
+    const data = await apiFetch('/users/register', { name, email, phone, password: pass });
+    saveAuth(data.token, data.user);
+    showAlert('regSuccess', '✓ Account created! Redirecting...');
+    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+  } catch (err) {
+    showAlert('regError', err.message);
+    btn.textContent = btn.dataset.orig; btn.disabled = false;
+  }
+});
+
+// Enter key support
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
+document.getElementById('regPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('registerBtn').click();
+});
+</script>
+
+</body>
+</html>

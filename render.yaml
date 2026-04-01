@@ -1,0 +1,35 @@
+# render.yaml — Render.com deployment config
+# Push this file to your GitHub repo root
+
+services:
+  - type: web
+    name: peakmale-api
+    env: node
+    region: singapore    # closest to India
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false        # Set this manually in Render dashboard (never commit to git)
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: UPI_ID
+        sync: false
+      - key: UPI_NAME
+        sync: false
+      - key: UPI_QR_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://peakmale.in,https://www.peakmale.in
