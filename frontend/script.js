@@ -9,7 +9,7 @@
 // In production this is your Render.com backend URL
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:5000/api'
-  : 'https://peakmale-api.onrender.com/api'; // ← change after deploy
+  : 'https://peakmale2-0.onrender.com'; // ← change after deploy
 
 // ==================== STATE ====================
 let products      = [];   // fetched from API
