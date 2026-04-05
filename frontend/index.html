@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PEAKMALE — Built for the Bold</title>
+  <meta name="description" content="PEAKMALE — India's boldest gaming accessories and hobby RC/die-cast car store. 3D printed weapons, figurines, RC cars, and more." />
+  <link rel="icon" href="https://raw.githubusercontent.com/Maruf-788/pmimages/refs/heads/main/cropped_circle_image%20(1)%20(1)-photoaidcom-cropped.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- EmailJS (for newsletter) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>(function(){ if(typeof emailjs !== 'undefined') emailjs.init('YOUR_EMAILJS_PUBLIC_KEY'); })();</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "https://peakmale.in",
+    "logo": "https://raw.githubusercontent.com/Maruf-788/pmimages/refs/heads/main/cropped_circle_image%20(1)%20(1)-photoaidcom-cropped.png"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="#" class="nav-logo" aria-label="PEAKMALE Home">
+        <span class="logo-text">PEAKMALE</span>
+        <span class="logo-dot">●</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#shop" class="nav-link">Shop</a></li>
+        <li><a href="#categories" class="nav-link">Categories</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="cart-btn" id="cartBtn" aria-label="Open cart" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+        </button>
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="home" aria-label="Hero section">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="hero-particles" aria-hidden="true" id="heroParticles"></div>
+    <div class="hero-scanlines" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">⚡ INDIA'S #1 GAMING STORE</div>
+      <h1 class="hero-title">
+        <span class="line1">BUILT FOR</span>
+        <span class="line2">THE <em>BOLD</em></span>
+      </h1>
+      <p class="hero-sub">3D Printed Gaming Weapons · Hobby RC Cars · Die-Cast Collectibles<br/>All crafted for those who play hard and collect harder.</p>
+      <div class="hero-ctas">
+        <a href="#shop" class="btn btn-primary" aria-label="Shop gaming accessories">
+          <span>Shop Gaming</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#shop" class="btn btn-secondary" aria-label="Shop tech accessories">
+          <span>Shop Tech</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats" aria-label="Key statistics">
+        <div class="stat"><strong>500+</strong><span>Items Sold</span></div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat"><strong>100%</strong><span>Indian Brand</span></div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat"><strong>3D</strong><span>Printed in India</span></div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ===================== MARQUEE ===================== -->
+  <div class="marquee-strip" aria-label="Store highlights">
+    <div class="marquee-track" aria-hidden="true">
+      <span>🚚 Free Shipping on ₹999+</span><span class="sep">◆</span>
+      <span>💸 COD Available</span><span class="sep">◆</span>
+      <span>🇮🇳 3D Printed in India</span><span class="sep">◆</span>
+      <span>🔄 7-Day Returns</span><span class="sep">◆</span>
+      <span>🎮 500+ Happy Customers</span><span class="sep">◆</span>
+      <span>⚡ Same Day Dispatch</span><span class="sep">◆</span>
+      <span>🚚 Free Shipping on ₹999+</span><span class="sep">◆</span>
+      <span>💸 COD Available</span><span class="sep">◆</span>
+      <span>🇮🇳 3D Printed in India</span><span class="sep">◆</span>
+      <span>🔄 7-Day Returns</span><span class="sep">◆</span>
+      <span>🎮 500+ Happy Customers</span><span class="sep">◆</span>
+      <span>⚡ Same Day Dispatch</span><span class="sep">◆</span>
+    </div>
+  </div>
+
+  <!-- ===================== CATEGORIES ===================== -->
+  <section class="categories" id="categories" aria-labelledby="catHeading">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="catHeading">EXPLORE <span>CATEGORIES</span></h2>
+        <p class="section-sub">Choose your battleground</p>
+      </div>
+      <div class="categories-grid">
+        <a href="#shop" class="cat-card" data-cat="gaming" aria-label="Shop Gaming Accessories">
+          <div class="cat-bg-img" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="" loading="lazy" />
+          </div>
+          <div class="cat-overlay" aria-hidden="true"></div>
+          <div class="cat-content">
+            <div class="cat-icon" aria-hidden="true">⚔️</div>
+            <h3>Gaming Accessories</h3>
+            <p>3D printed weapons, figurines &amp; replicas</p>
+            <span class="cat-cta">EXPLORE →</span>
+          </div>
+          <div class="cat-glow" aria-hidden="true"></div>
+        </a>
+
+        <a href="#shop" class="cat-card" data-cat="tech" aria-label="Shop Tech Accessories">
+          <div class="cat-bg-img" aria-hidden="true">
+            <img src="https://raw.githubusercontent.com/Maruf-788/pmimages/refs/heads/main/Tech%20Products%20(1).jpg" alt="" loading="lazy" />
+          </div>
+          <div class="cat-overlay" aria-hidden="true"></div>
+          <div class="cat-content">
+            <div class="cat-icon" aria-hidden="true">🔧</div>
+            <h3>Tech Accessories</h3>
+            <p>Gadgets, accessories &amp; upgrades</p>
+            <span class="cat-cta">EXPLORE →</span>
+          </div>
+          <div class="cat-glow" aria-hidden="true"></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRODUCTS ===================== -->
+  <section class="shop" id="shop" aria-labelledby="shopHeading">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="shopHeading">FEATURED <span>DROPS</span></h2>
+        <p class="section-sub">Hand-picked for the bold</p>
+      </div>
+
+      <div class="filter-tabs" role="tablist" aria-label="Product category filters">
+        <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true" aria-controls="productsGrid">All Products</button>
+        <button class="filter-tab" data-filter="gaming" role="tab" aria-selected="false" aria-controls="productsGrid">⚔️ Gaming</button>
+        <button class="filter-tab" data-filter="tech" role="tab" aria-selected="false" aria-controls="productsGrid">🔧 Tech</button>
+      </div>
+
+      <div class="products-grid" id="productsGrid" role="tabpanel" aria-label="Products">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== OFFERS BANNER ===================== -->
+  <section class="offers-banner" aria-label="Special offer">
+    <div class="offers-bg" aria-hidden="true"></div>
+    <div class="container offers-inner">
+      <div class="offer-text">
+        <span class="offer-fire" aria-hidden="true">🔥</span>
+        <div>
+          <h2 class="offer-headline">LIMITED TIME OFFER</h2>
+          <p class="offer-sub">Use code <strong class="offer-code">PEAK10</strong> for 10% OFF your entire order</p>
+        </div>
+      </div>
+      <div class="countdown" aria-label="Countdown timer">
+        <div class="count-unit"><span class="count-num" id="countDays">00</span><span class="count-label">DAYS</span></div>
+        <span class="count-sep" aria-hidden="true">:</span>
+        <div class="count-unit"><span class="count-num" id="countHours">00</span><span class="count-label">HRS</span></div>
+        <span class="count-sep" aria-hidden="true">:</span>
+        <div class="count-unit"><span class="count-num" id="countMins">00</span><span class="count-label">MIN</span></div>
+        <span class="count-sep" aria-hidden="true">:</span>
+        <div class="count-unit"><span class="count-num" id="countSecs">00</span><span class="count-label">SEC</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REVIEWS ===================== -->
+  <section class="reviews" id="reviews" aria-labelledby="reviewsHeading">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="reviewsHeading">WHAT THE <span>SQUAD SAYS</span></h2>
+        <p class="section-sub">Real talk from real gamers</p>
+      </div>
+      <div class="reviews-track" role="list" aria-label="Customer reviews">
+
+        <article class="review-card" role="listitem">
+          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="review-text">"The Minecraft Diamond Sword is insane quality. 3D printed so clean, the colour is perfect. My entire room setup is now gaming-core. Worth every rupee!"</p>
+          <div class="review-author">
+            <div class="author-avatar" aria-hidden="true">AK</div>
+            <div>
+              <strong>Arjun Kapoor</strong>
+              <span>Mumbai, Maharashtra</span>
+            </div>
+            <span class="verified-badge" aria-label="Verified buyer">✓ Verified</span>
+          </div>
+        </article>
+
+        <article class="review-card" role="listitem">
+          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="review-text">"Got the Lamborghini die-cast. The detail on this thing is unreal. Metal body, opening doors — this is a proper collector's piece. Packaging was also top notch."</p>
+          <div class="review-author">
+            <div class="author-avatar" aria-hidden="true">RS</div>
+            <div>
+              <strong>Rohan Sharma</strong>
+              <span>Delhi, NCR</span>
+            </div>
+            <span class="verified-badge" aria-label="Verified buyer">✓ Verified</span>
+          </div>
+        </article>
+
+        <article class="review-card" role="listitem">
+          <div class="review-stars" aria-label="4 out of 5 stars">★★★★☆</div>
+          <p class="review-text">"RC Drift Car is an absolute banger for the price. My friends and I drift it on the terrace every weekend. Battery life is solid and the controls are responsive."</p>
+          <div class="review-author">
+            <div class="author-avatar" aria-hidden="true">VP</div>
+            <div>
+              <strong>Varun Pillai</strong>
+              <span>Bengaluru, Karnataka</span>
+            </div>
+            <span class="verified-badge" aria-label="Verified buyer">✓ Verified</span>
+          </div>
+        </article>
+
+        <article class="review-card" role="listitem">
+          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="review-text">"Cyberpunk Katana is a showstopper. Hung it on my wall and everyone who visits asks where I got it. PEAKMALE is the real deal — fast shipping too!"</p>
+          <div class="review-author">
+            <div class="author-avatar" aria-hidden="true">SM</div>
+            <div>
+              <strong>Siddharth Menon</strong>
+              <span>Chennai, Tamil Nadu</span>
+            </div>
+            <span class="verified-badge" aria-label="Verified buyer">✓ Verified</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="about" id="about" aria-labelledby="aboutHeading">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="about-eyebrow">OUR STORY</div>
+          <h2 class="about-title" id="aboutHeading">WE ARE <span>PEAKMALE</span></h2>
+          <p>An Indian brand built for the ones who are always ahead of the curve.</p>
+          <p>We started with a simple frustration — <strong>finding cool tech, gadgets, and gear in India</strong> meant either overpaying, waiting forever, or settling for less.</p>
+          <p>So we built the store we always wished existed.</p>
+          <p>From the <strong>latest tech accessories to gadgets</strong> that actually make life better, every product we carry is handpicked for people who care about quality, design, and value.</p>
+          <p>Whether you're a gamer, a tech enthusiast, or just someone who loves owning things that work and look good — this is your place.</p>
+          <p>Smart picks. Fair prices. Delivered to your door.</p>
+          <a href="#shop" class="btn btn-primary">Shop Now →</a>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-box">
+            <span class="stat-num">500+</span>
+            <span class="stat-label">Products Sold</span>
+            <div class="stat-bar"></div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Indian Brand</span>
+            <div class="stat-bar"></div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">7-Day</span>
+            <span class="stat-label">Easy Returns</span>
+            <div class="stat-bar"></div>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">4.9★</span>
+            <span class="stat-label">Avg. Rating</span>
+            <div class="stat-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== NEWSLETTER ===================== -->
+  <section class="newsletter" id="contact" aria-labelledby="newsletterHeading">
+    <div class="newsletter-bg" aria-hidden="true"></div>
+    <div class="container newsletter-inner">
+      <div class="newsletter-content">
+        <div class="newsletter-icon" aria-hidden="true">⚡</div>
+        <h2 id="newsletterHeading">JOIN THE <span>INNER CIRCLE</span></h2>
+        <p>Join 2,000+ gamers. Get drops, deals &amp; new arrivals first.</p>
+        <div class="newsletter-form">
+          <form id="newsletterForm" style="display:contents">
+            <input
+              type="email"
+              name="email"
+              id="emailInput"
+              class="newsletter-input"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+            />
+            <button class="btn btn-primary" id="subscribeBtn" type="submit">
+              SUBSCRIBE
+            </button>
+          </form>
+        </div>
+        <p class="newsletter-fine">No spam. Unsubscribe anytime. 🎮</p>
+        <div class="newsletter-success" id="newsletterSuccess" hidden>
+          ✅ You're in! Welcome to the squad.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">PEAKMALE<span>●</span></div>
+          <p class="footer-tagline">Built for the Bold</p>
+          <p class="footer-desc">India's boldest Gadgets &amp; Gaming Assessories store.</p>
+          <div class="payment-badges" aria-label="Accepted payment methods">
+            <span class="pay-badge">UPI</span>
+            <span class="pay-badge">Razorpay</span>
+            <span class="pay-badge">COD</span>
+          </div>
+        </div>
+
+        <nav class="footer-links" aria-label="Shop navigation">
+          <h4>SHOP</h4>
+          <ul role="list">
+            <li><a href="#shop">Tech Accessories</a></li>
+            <li><a href="#shop">Gadgets</a></li>
+            <li><a href="#shop">Gaming Accessories</a></li>
+            <li><a href="#shop">Best Sellers</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-links" aria-label="Support navigation">
+          <h4>SUPPORT</h4>
+          <ul role="list">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#">Shipping Policy</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-contact">
+          <h4>CONTACT</h4>
+          <address>
+            <a href="mailto:marufahmad6576@gmail.com">📧 marufahmad6576@gmail.com</a>
+            <a href="https://wa.me/916206898744" aria-label="WhatsApp PEAKMALE">💬 WhatsApp: +91 6206898744</a>
+            <a href="https://peakmale.in" aria-label="PEAKMALE website">🌐 peakmale.in</a>
+          </address>
+          <div class="social-links" aria-label="Social media">
+            <a href="#" class="social-link" aria-label="Instagram">IG</a>
+            <a href="#" class="social-link" aria-label="YouTube">YT</a>
+            <a href="#" class="social-link" aria-label="Twitter / X">𝕏</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>Made with ❤️ in India</p>
+        <p>Created by Maruf Ahmad</p>
+        <p>© 2026 PEAKMALE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== CART SIDEBAR ===================== -->
+  <aside class="cart-overlay" id="cartOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Shopping cart overlay"></aside>
+
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart" aria-hidden="true">
+    <div class="cart-header">
+      <h2>YOUR CART <span class="cart-count-text" id="cartCountText">0 items</span></h2>
+      <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems" aria-live="polite"></div>
+    <div class="cart-footer" id="cartFooter"></div>
+  </aside>
+
+  <!-- ===================== TOAST ===================== -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init("0Bait5beHSMbkPHuQ");
+</script>
+  <script src="script.js"></script>
+</body>
+</html>
